@@ -102,10 +102,7 @@ class TelaFuncionario(CTkToplevel):
         CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
         CTkLabel(self.f_funcionario, text='TELEFONE', font=self.font_tabela_coluna).grid(column=5, row=0, pady=0, padx=0)
         CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
-        
         CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='ens',pady=0, padx=0)
-        #CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=7, row=0, rowspan=rows+1, sticky='ens',pady=0, padx=0)
-        #CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=16, row=1, rowspan=rows+1, sticky='ens')
         
         for l in range(rows):
             CTkLabel(self.f_funcionario, text=self.funcionarios[l].id, font=self.font_tabela_linha).grid(column=0, row=l+1)

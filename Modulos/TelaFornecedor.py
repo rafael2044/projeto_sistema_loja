@@ -36,6 +36,8 @@ class TelaFornecedor(CTkToplevel):
         
     def carregar_widgets(self):
         self.font_label = CTkFont('Segoe UI', size=18, weight='bold')
+        self.font_tabela_coluna = CTkFont('Segoe UI', size=17, weight='bold')
+        self.font_tabela_linha = CTkFont('Segoe UI', size=15)
         self.font_entry = CTkFont('Segoe UI', size=16)
         self.font_button = CTkFont('Segoe UI', size=18, weight='bold')
         
@@ -51,7 +53,7 @@ class TelaFornecedor(CTkToplevel):
         f_bts_top = CTkFrame(self, corner_radius=25, fg_color='transparent')
         
         self.f_fornecedor = CTkScrollableFrame(self, corner_radius=20)
-        self.f_fornecedor.grid_columnconfigure(0, weight=0)
+        self.f_fornecedor.grid_columnconfigure(0, weight=1)
         self.f_fornecedor.grid_columnconfigure(1, weight=5)
         self.f_fornecedor.grid_columnconfigure(2, weight=2)
         self.f_fornecedor.grid_columnconfigure(3, weight=2)
@@ -60,40 +62,53 @@ class TelaFornecedor(CTkToplevel):
         self.f_fornecedor.grid_columnconfigure(6, weight=0)
         self.f_fornecedor.grid_columnconfigure(7, weight=0)
         
-        
+        self.f_fornecedor.grid_rowconfigure(0, weight=0)
+
         self.pesquisa = CTkEntry(self, placeholder_text='Nome do fornecedor', width=150,height=40, font=self.font_entry)
         
-        self.pesquisa.grid(column=0, row=0, padx=10, pady=10, sticky='we')
-        f_bts_top.grid(column=1, columnspan=2, row=0, sticky='e')
+        self.pesquisa.grid(column=0,columnspan=2, row=0, padx=10, pady=10, sticky='we')
+        f_bts_top.grid(column=2, row=0, sticky='we')
         CTkButton(f_bts_top, text='', image=CTkImage(Image.open(img_pesquisa), size=(32,32)), width=75,height=40).pack(side='left', padx=(5,5))
         CTkButton(f_bts_top, text='', image=CTkImage(Image.open(img_atualizar), size=(32,32)), width=75,height=40).pack(side='left', padx=(5,10))
         CTkButton(f_bts_top, text='Cadastrar', image=CTkImage(Image.open(img_cadastrar), size=(32,32)), command=self.abrir_telaCadastrarFornecedor, compound='left',
                   font=self.font_button).pack(side='left', padx=(5,10))
         
-        self.f_fornecedor.grid(column=0, row=1, columnspan=2, sticky='wsen', padx=(10,0), ipadx=20, ipady=20)
+        self.f_fornecedor.grid(column=0, row=1, columnspan=3, sticky='wsen', padx=(10,0), ipadx=20, ipady=20)
         self.carregar_fornecedores()
              
     def carregar_fornecedores(self):
         [x.destroy() for x in self.f_fornecedor.winfo_children()]
-        CTkLabel(self.f_fornecedor, text='ID').grid(column=0, row=0)
-        CTkLabel(self.f_fornecedor, text='NOME').grid(column=1, row=0)
-        CTkLabel(self.f_fornecedor, text='CNPJ').grid(column=2, row=0)
-        CTkLabel(self.f_fornecedor, text='CPF').grid(column=3, row=0)
-        CTkLabel(self.f_fornecedor, text='ENREDEÇO').grid(column=4, row=0)
-        CTkLabel(self.f_fornecedor, text='TELEFONE').grid(column=5, row=0)
         self.fornecedores = fornecedorDAO().select_all_fornecedores()
         rows = len(self.fornecedores)
+        CTkFrame(self.f_fornecedor, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wen', ipady=0, pady=(0,0), padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wes', ipady=0, pady=(0,0), padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=0, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
+        CTkLabel(self.f_fornecedor, text='ID', font=self.font_tabela_coluna).grid(column=0, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=1, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
+        CTkLabel(self.f_fornecedor, text='NOME', font=self.font_tabela_coluna).grid(column=1, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=2, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
+        CTkLabel(self.f_fornecedor, text='CNPJ', font=self.font_tabela_coluna).grid(column=2, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=3, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
+        CTkLabel(self.f_fornecedor, text='CPF', font=self.font_tabela_coluna).grid(column=3, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=4, row=0, rowspan=rows+2, sticky='wns', padx=0, pady=0)
+        CTkLabel(self.f_fornecedor, text='ENREDEÇO', font=self.font_tabela_coluna).grid(column=4, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
+        CTkLabel(self.f_fornecedor, text='TELEFONE', font=self.font_tabela_coluna).grid(column=5, row=0, pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
+        CTkFrame(self.f_fornecedor, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='ens',pady=0, padx=0)
+        
         for l in range(rows):
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].id).grid(column=0, row=l+1)
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].nome).grid(column=1, row=l+1)
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_cnpj()).grid(column=2, row=l+1)
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_cpf()).grid(column=3, row=l+1)
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].endereco).grid(column=4, row=l+1)
-            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_telefone()).grid(column=5, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].id, font=self.font_tabela_linha).grid(column=0, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].nome, font=self.font_tabela_linha).grid(column=1, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_cnpj(), font=self.font_tabela_linha).grid(column=2, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_cpf(), font=self.font_tabela_linha).grid(column=3, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].endereco, font=self.font_tabela_linha).grid(column=4, row=l+1)
+            CTkLabel(self.f_fornecedor, text=self.fornecedores[l].get_telefone(), font=self.font_tabela_linha).grid(column=5, row=l+1)
             CTkButton(self.f_fornecedor, text='', image=CTkImage(Image.open(img_editar), size=(32,32)), width=70, 
                       command=lambda x=l: self.abrir_telaEditarFornecedor(self.fornecedores[x])).grid(column=6, row=l+1, padx=10)
             CTkButton(self.f_fornecedor, text='',image=CTkImage(Image.open(img_excluir), size=(32,32)), width=70, 
                       command=lambda y = l: self.deletar_fornecedor(self.fornecedores[y])).grid(column=7, row=l+1, padx=10)
+            CTkFrame(self.f_fornecedor, bg_color='white', height=1).grid(column=0, columnspan=6, row=l+1, sticky='wes')
         
     def deletar_fornecedor(self, fornecedor):
         op = DialogoSimNao('Alerta', f'Deseja Excluir o fornecedor {fornecedor.nome}?')

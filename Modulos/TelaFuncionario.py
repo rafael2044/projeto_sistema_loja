@@ -65,8 +65,7 @@ class TelaFuncionario(CTkToplevel):
         self.f_funcionario.grid_columnconfigure(5, weight=5)
         self.f_funcionario.grid_columnconfigure(6, weight=0)
         self.f_funcionario.grid_columnconfigure(7, weight=0)
-    
-        self.f_funcionario.grid_rowconfigure(0, weight=0)
+
         
         
         self.pesquisa = CTkEntry(self, placeholder_text='Nome do Funcionario', width=150,height=40, font=self.font_entry)
@@ -87,22 +86,14 @@ class TelaFuncionario(CTkToplevel):
         [x.destroy() for x in self.f_funcionario.winfo_children()]
         self.funcionarios = funcionarioDAO().select_all_funcionarios()
         rows = len(self.funcionarios)
-        CTkFrame(self.f_funcionario, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wen', ipady=0, pady=(0,0), padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wes', ipady=0, pady=(0,0), padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=0, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
         CTkLabel(self.f_funcionario, text='ID', font=self.font_tabela_coluna).grid(column=0, row=0, pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=1, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
         CTkLabel(self.f_funcionario, text='NOME', font=self.font_tabela_coluna).grid(column=1, row=0, pady=0,padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=2, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
         CTkLabel(self.f_funcionario, text='SOBRENOME', font=self.font_tabela_coluna).grid(column=2, row=0, pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=3, row=0, rowspan=rows+1, sticky='wns', padx=0, pady=0)
         CTkLabel(self.f_funcionario, text='CPF', font=self.font_tabela_coluna).grid(column=3, row=0, pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=4, row=0, rowspan=rows+2, sticky='wns', padx=0, pady=0)
         CTkLabel(self.f_funcionario, text='CARGO', font=self.font_tabela_coluna).grid(column=4, row=0, pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
         CTkLabel(self.f_funcionario, text='TELEFONE', font=self.font_tabela_coluna).grid(column=5, row=0, pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='wns', pady=0, padx=0)
-        CTkFrame(self.f_funcionario, bg_color='white', width=1).grid(column=5, row=0, rowspan=rows+1, sticky='ens',pady=0, padx=0)
+        CTkFrame(self.f_funcionario, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wes')
+        CTkFrame(self.f_funcionario, bg_color='white', height=1).grid(column=0, columnspan=6, row=0, sticky='wen')
         
         for l in range(rows):
             CTkLabel(self.f_funcionario, text=self.funcionarios[l].id, font=self.font_tabela_linha).grid(column=0, row=l+1)
@@ -112,10 +103,10 @@ class TelaFuncionario(CTkToplevel):
             CTkLabel(self.f_funcionario, text=self.funcionarios[l].get_cargo_nome(), font=self.font_tabela_linha).grid(column=4, row=l+1)
             CTkLabel(self.f_funcionario, text=self.funcionarios[l].get_telefone(), font=self.font_tabela_linha).grid(column=5, row=l+1)
             CTkButton(self.f_funcionario, text='', image=CTkImage(Image.open(img_editar), size=(32,32)), width=70, 
-                      command=lambda x=l: self.abrir_telaEditarFuncionario(self.funcionarios[x])).grid(column=6, row=l+1, padx=10)
+                      command=lambda x=l: self.abrir_telaEditarFuncionario(self.funcionarios[x])).grid(column=6, row=l+1, padx=10, pady=5)
             CTkButton(self.f_funcionario, text='',image=CTkImage(Image.open(img_excluir), size=(32,32)), width=70, 
-                      command=lambda y = l: self.deletar_funcionario(self.funcionarios[y])).grid(column=7, row=l+1, padx=10)
-            CTkFrame(self.f_funcionario, bg_color='white', height=1).grid(column=0, columnspan=6, row=l+1, sticky='wes')
+                      command=lambda y = l: self.deletar_funcionario(self.funcionarios[y])).grid(column=7, row=l+1, padx=10, pady=5)
+            
 
     def deletar_funcionario(self, funcionario):
         op = DialogoSimNao('Alerta', f'Deseja Excluir o funcionario {funcionario.nome}?')

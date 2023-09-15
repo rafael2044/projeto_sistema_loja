@@ -38,8 +38,11 @@ class TelaUsuario(CTkToplevel):
 
     def carregar_widgets(self):
         self.font_label = CTkFont('Segoe UI', size=18, weight='bold')
+        self.font_tabela_coluna = CTkFont('Segoe UI', size=17, weight='bold')
+        self.font_tabela_linha = CTkFont('Segoe UI', size=15)
         self.font_entry = CTkFont('Segoe UI', size=16)
         self.font_button = CTkFont('Segoe UI', size=18, weight='bold')
+        
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
@@ -57,7 +60,9 @@ class TelaUsuario(CTkToplevel):
         self.f_usuario.grid_columnconfigure(2, weight=5)
         self.f_usuario.grid_columnconfigure(3, weight=5)
         self.f_usuario.grid_columnconfigure(4, weight=0)
-
+        self.f_usuario.grid_rowconfigure(0, weight=0, pad=0)
+        self.f_usuario.grid_rowconfigure(1, weight=0, minsize=0)
+        self.f_usuario.grid_rowconfigure(2, weight=0, minsize=0)
         self.pesquisa = CTkEntry(
             self, placeholder_text='Nome do Usuario', width=150, height=40, font=self.font_entry)
 
@@ -76,20 +81,25 @@ class TelaUsuario(CTkToplevel):
 
     def carregar_usuarios(self):
         [x.destroy() for x in self.f_usuario.winfo_children()]
-        CTkLabel(self.f_usuario, text='ID').grid(column=0, row=0)
-        CTkLabel(self.f_usuario, text='NOME DE USUARIO').grid(column=1, row=0)
-        CTkLabel(self.f_usuario, text='NOME COMPLETO').grid(column=2, row=0)
-        CTkLabel(self.f_usuario, text='CARGO').grid(column=3, row=0)
+        
         self.usuarios = usuarioDAO().select_all_usuarios()
         rows = len(self.usuarios)
+        
+        CTkLabel(self.f_usuario, text='ID', font=self.font_tabela_coluna).grid(column=0, row=0)
+        CTkLabel(self.f_usuario, text='NOME DE USUARIO', font=self.font_tabela_coluna).grid(column=1, row=0)
+        CTkLabel(self.f_usuario, text='NOME COMPLETO', font=self.font_tabela_coluna).grid(column=2, row=0)
+        CTkLabel(self.f_usuario, text='CARGO', font=self.font_tabela_coluna).grid(column=3, row=0)
+        CTkFrame(self.f_usuario, bg_color='white', height=1).grid(column=0, columnspan=4, row=0, sticky='wes')
+        CTkFrame(self.f_usuario, bg_color='white', height=1).grid(column=0, columnspan=4, row=0, sticky='wen')
+        
         for l in range(rows):
-            CTkLabel(self.f_usuario, text=self.usuarios[l].id).grid(
+            CTkLabel(self.f_usuario, text=self.usuarios[l].id, font=self.font_tabela_linha).grid(
                 column=0, row=l+1)
-            CTkLabel(self.f_usuario, text=self.usuarios[l].nome).grid(
+            CTkLabel(self.f_usuario, text=self.usuarios[l].nome, font=self.font_tabela_linha).grid(
                 column=1, row=l+1)
-            CTkLabel(self.f_usuario, text=self.usuarios[l].get_nome_completo()).grid(
+            CTkLabel(self.f_usuario, text=self.usuarios[l].get_nome_completo(), font=self.font_tabela_linha).grid(
                 column=2, row=l+1)
-            CTkLabel(self.f_usuario, text=self.usuarios[l].funcionario.get_cargo_nome()).grid(
+            CTkLabel(self.f_usuario, text=self.usuarios[l].funcionario.get_cargo_nome(), font=self.font_tabela_linha).grid(
                 column=3, row=l+1)
             CTkButton(self.f_usuario, text='', image=CTkImage(Image.open(img_excluir), size=(32, 32)), width=70,
                       command=lambda y=l: self.deletar_usuario(self.usuarios[y])).grid(column=4, row=l+1, padx=10)
